@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parental Burnout Reflection Check (PBRC)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <main class="max-w-4xl mx-auto px-4 py-10">
+    <!-- Header -->
+    <header class="mb-8">
+      <img src="mhp-logo.png" alt="MHP Logo" class="h-20 w-auto mb-6 mx-auto block" />
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Parental Burnout Reflection Check (PBRC)</h1>
+          <p class="mt-2 text-slate-600">
+            Think about the last 14 days. <br>Choose a number for each statement:<br>
+            <span class="font-semibold">0</span> Not at all,
+            <span class="font-semibold">1</span> Rarely,
+            <span class="font-semibold">2</span> Sometimes,
+            <span class="font-semibold">3</span> Often,
+            <span class="font-semibold">4</span> Almost always.
+          </p>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+          Reflection tool (not diagnostic)
+        </span>
+      </div>
+
+      <div class="mt-4 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
+        <p class="font-semibold">Important</p>
+        <p class="mt-1">
+          This is a reflection + coaching check-in and is not a validated diagnostic instrument.
+          If you’re in distress or feel unsafe, consider reaching out to a licensed professional or local supports.
+        </p>
+      </div>
+    </header>
+
+    <!-- Form -->
+    <form id="pbrcForm" class="space-y-10">
+      <!-- Part A -->
+      <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold">Part A — Your 2-Week Snapshot</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Optional tracking: items #2 and #4 can be reverse-scored for your own notes (shown in results).
+            </p>
+          </div>
+        </div>
+
+        <!-- FIX: Part A now renders like Part B (stacked) -->
+        <div id="partA" class="mt-6 space-y-3"></div>
+      </section>
+
+      <!-- Part B -->
+      <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold">Part B — Four Burnout Signals</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              These 16 items power the main score (0–64) and the “highest signal” result.
+            </p>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-slate-500">Items completed</div>
+            <div class="text-lg font-bold"><span id="bCompleted">0</span><span class="text-slate-400">/16</span></div>
+          </div>
+        </div>
+
+        <div id="partB" class="mt-6 space-y-8"></div>
+      </section>
+
+      <!-- Part C -->
+      <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-xl font-bold">Part C — What’s driving it? (Load vs. Resources)</h2>
+        <p class="mt-1 text-sm text-slate-600">
+          Choose up to <span class="font-semibold">3</span> loaders and up to <span class="font-semibold">3</span> missing resources.
+        </p>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Top 3 Loaders</h3>
+              <span class="text-xs text-slate-500"><span id="loadersCount">0</span>/3</span>
+            </div>
+            <div id="loaders" class="mt-3 grid grid-cols-1 gap-2"></div>
+            <div class="mt-3">
+              <label class="text-sm font-semibold">Other (optional)</label>
+              <input id="loaderOther" type="text"
+                class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                placeholder="Type here..." />
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Top 3 Resources Missing</h3>
+              <span class="text-xs text-slate-500"><span id="resourcesCount">0</span>/3</span>
+            </div>
+            <div id="resources" class="mt-3 grid grid-cols-1 gap-2"></div>
+            <div class="mt-3">
+              <label class="text-sm font-semibold">Other (optional)</label>
+              <input id="resourceOther" type="text"
+                class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                placeholder="Type here..." />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part D -->
+      <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-xl font-bold">Part D — Your 7-Day Micro-Plan (choose ONE)</h2>
+        <p class="mt-1 text-sm text-slate-600">
+          After you calculate results, we’ll auto-suggest a plan based on your highest signal (you can override it).
+        </p>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 p-4">
+            <label class="text-sm font-semibold">My highest burnout signal is</label>
+            <select id="highestSignalSelect"
+              class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300">
+              <option value="">(Select after results)</option>
+              <option value="Depletion">Depletion</option>
+              <option value="Distancing">Distancing</option>
+              <option value="Saturation">Saturation</option>
+              <option value="Self-gap">Self-gap</option>
+            </select>
+
+            <div class="mt-4">
+              <div class="text-sm font-semibold">Pick one action for the week</div>
+              <div id="microPlanActions" class="mt-2 space-y-2"></div>
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="space-y-3">
+              <div>
+                <label class="text-sm font-semibold">What might block me?</label>
+                <textarea id="blockers" rows="2"
+                  class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                  placeholder="Example: no childcare, work deadlines, sleep..."></textarea>
+              </div>
+              <div>
+                <label class="text-sm font-semibold">My workaround</label>
+                <textarea id="workaround" rows="2"
+                  class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                  placeholder="Example: ask for help, simplify dinners, set a timer..."></textarea>
+              </div>
+              <div>
+                <label class="text-sm font-semibold">Who will support me?</label>
+                <input id="supportPerson" type="text"
+                  class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                  placeholder="Example: partner, friend, sitter, group..." />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <section class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex gap-3">
+          <button type="button" id="resetBtn"
+            class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+            Reset
+          </button>
+          <button type="submit" id="calcBtn"
+            class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+            Show my results
+          </button>
+        </div>
+      </section>
+    </form>
+
+    <!-- Results -->
+    <section id="resultsSection" class="mt-10 hidden">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 class="text-2xl font-bold">Your Results</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Informational only — not diagnosis. Use this to decide what support to add next.
+            </p>
+          </div>
+          <button type="button" id="copyBtn"
+            class="h-10 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+            Copy summary
+          </button>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="text-xs uppercase tracking-wide text-slate-500">Part B Total Score</div>
+            <div class="mt-1 text-3xl font-bold"><span id="totalScore">—</span><span class="text-slate-400 text-base">/64</span></div>
+            <div id="zoneBadge"
+              class="mt-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+              —
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="text-xs uppercase tracking-wide text-slate-500">Highest Burnout Signal</div>
+            <div class="mt-1 text-lg font-bold" id="highestSignal">—</div>
+            <p class="mt-2 text-sm text-slate-600" id="highestSignalHint">—</p>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 p-4">
+            <div class="text-xs uppercase tracking-wide text-slate-500">Subscale Scores (0–16)</div>
+            <div class="mt-3 space-y-2 text-sm">
+              <div class="flex items-center justify-between"><span>Depletion</span><span class="font-semibold" id="scoreDepletion">—</span></div>
+              <div class="flex items-center justify-between"><span>Distancing</span><span class="font-semibold" id="scoreDistancing">—</span></div>
+              <div class="flex items-center justify-between"><span>Saturation</span><span class="font-semibold" id="scoreSaturation">—</span></div>
+              <div class="flex items-center justify-between"><span>Self-gap</span><span class="font-semibold" id="scoreSelfgap">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div class="font-semibold">Suggested next step (based on your highest signal)</div>
+          <p class="mt-1 text-sm text-slate-700" id="nextStepText">—</p>
+        </div>
+
+        <div class="mt-6 text-sm text-slate-600">
+          <details class="rounded-xl border border-slate-200 bg-white p-4">
+            <summary class="cursor-pointer font-semibold">Part A (optional) reverse-score note</summary>
+            <p class="mt-2">
+              For your personal tracking, Part A items #2 and #4 can be reverse-scored (4→0, 3→1, 2→2, 1→3, 0→4).
+            </p>
+            <p class="mt-2 text-slate-700">
+              Your selections:
+              <span class="font-semibold">#2</span> = <span id="a2Raw">—</span> (reverse: <span id="a2Rev">—</span>),
+              <span class="font-semibold">#4</span> = <span id="a4Raw">—</span> (reverse: <span id="a4Rev">—</span>)
+            </p>
+          </details>
+        </div>
+
+        <!-- NEW: Email results (Option 2: Google Apps Script Web App) -->
+        <div class="mt-6 rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div class="font-semibold">Email me a copy of my results</div>
+              <div class="text-sm text-slate-600">
+                Enter your email and we’ll send the summary.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div>
+              <label class="text-sm font-semibold" for="emailCapture">Email</label>
+              <input id="emailCapture" type="email" inputmode="email" autocomplete="email"
+                class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+                placeholder="you@example.com" />
+              <!-- honeypot -->
+              <input id="hpField" type="text" class="hidden" tabindex="-1" autocomplete="off" />
+              <p class="mt-2 text-xs text-slate-500">
+                We only send your results. Don’t include sensitive info in free-text boxes if you plan to email/share.
+              </p>
+            </div>
+
+            <button type="button" id="sendEmailBtn"
+              class="h-10 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800">
+              Send results
+            </button>
+          </div>
+
+          <div id="emailStatus" class="mt-3 text-sm text-slate-700"></div>
+        </div>
+
+        <!-- Share -->
+        <div class="mt-6 rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div class="font-semibold">Share this filled-out questionnaire</div>
+              <div class="text-sm text-slate-600">
+                Generates a link that will auto-fill answers when opened.
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button type="button" id="shareBtn"
+                class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Create share link
+              </button>
+              <button type="button" id="copyShareBtn"
+                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+                Copy link
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <input id="shareUrl" type="text" readonly
+              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-mono text-slate-800"
+              placeholder="Click “Create share link” to generate..." />
+            <p class="mt-2 text-xs text-slate-500">
+              Note: this stores answers in the URL. Don’t use it for sensitive/private details.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div id="ctaSection" class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+        <h3 class="text-xl font-bold text-emerald-950">Want support + momentum this week?</h3>
+        <p class="mt-2 text-emerald-900">
+          Join the group for practical support, simple micro-plans, and a place to reset your capacity without judgment.
+        </p>
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a id="joinBtn" href="https://example.com/join" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-xl bg-emerald-700 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-600">
+            Join the group
+          </a>
+          <span class="text-xs text-emerald-900/80">
+            (Temporary button link — replace <span class="font-mono">https://example.com/join</span> with yours.)
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-10 text-xs text-slate-500">
+      <p>
+        Inspired by parental burnout research. This page is a coaching reflection tool and not a diagnostic instrument.
+      </p>
+      <p>&copy; 2026 <a href="https://mentalhealthforpareting.substack.com" target="_blank">Mental Health For Parenting</a></p>
+    </footer>
+  </main>
+
+  <script>
+    // =========================
+    // CONFIG: Google Apps Script Web App URL
+    // =========================
+    // 1) Create & deploy Apps Script as a Web App (Anyone).
+    // 2) Paste the Web App URL here.
+    const APPS_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    // --- Data ---
+    const scale = [
+      { v: 0, label: "0", full: "Not at all" },
+      { v: 1, label: "1", full: "Rarely" },
+      { v: 2, label: "2", full: "Sometimes" },
+      { v: 3, label: "3", full: "Often" },
+      { v: 4, label: "4", full: "Almost always" },
+    ];
+
+    const partAItems = [
+      { id: "a1", label: "I feel like my “battery” is running low most days." },
+      { id: "a2", label: "I have enough emotional room to respond calmly when things go sideways.", reverseHint: true },
+      { id: "a3", label: "Parenting has felt heavy or effortful more than it has felt meaningful." },
+      { id: "a4", label: "I’ve had moments of genuine enjoyment with my child(ren).", reverseHint: true },
+    ];
+
+    const partBGroups = [
+      {
+        key: "Depletion",
+        subtitle: "Energy + emotional capacity",
+        hint: "When your battery is low, the goal is recovery first — then strategies.",
+        items: [
+          { id: "b1", label: "I’m parenting on “autopilot” because I don’t have much left." },
+          { id: "b2", label: "Small parenting tasks feel unusually draining." },
+          { id: "b3", label: "I feel emotionally worn out by the end of most days." },
+          { id: "b4", label: "Even after rest, I still feel behind on recovery." },
+        ],
+        microPlan: "Protect a daily 20–30 min recovery block (phone-free). Keep it tiny and consistent."
+      },
+      {
+        key: "Distancing",
+        subtitle: "Connection feels harder",
+        hint: "When connection feels “too much,” start with small, low-demand contact — not big talks.",
+        items: [
+          { id: "b5", label: "I’m physically present but emotionally checked out more than I want to be." },
+          { id: "b6", label: "I avoid interaction because it feels like “too much.”" },
+          { id: "b7", label: "I feel less patient or less warm than is typical for me." },
+          { id: "b8", label: "I notice myself going numb or flat just to get through the day." },
+        ],
+        microPlan: "Do one 10-minute connection ritual this week (walk, game, bedtime chat)."
+      },
+      {
+        key: "Saturation",
+        subtitle: "Overload + “I can’t do one more thing”",
+        hint: "When you’re saturated, lowering demands is not failure — it’s a nervous-system intervention.",
+        items: [
+          { id: "b9",  label: "I feel maxed out by the constant needs, noise, or interruptions." },
+          { id: "b10", label: "I have frequent thoughts like “I can’t keep doing this like this.”" },
+          { id: "b11", label: "I feel irritated or resentful more quickly than usual." },
+          { id: "b12", label: "I feel trapped in an endless loop of demands." },
+        ],
+        microPlan: "Remove/automate one repeating task AND lower one expectation (just one)."
+      },
+      {
+        key: "Self-gap",
+        subtitle: "Contrast with the parent you want to be",
+        hint: "When you miss “old you,” the goal is identity repair: compassion + one proof you’re still you.",
+        items: [
+          { id: "b13", label: "I don’t recognize myself as a parent lately." },
+          { id: "b14", label: "I feel guilty because I’m not showing up how I used to (or want to)." },
+          { id: "b15", label: "I feel like parenting has changed me in a way I don’t like." },
+          { id: "b16", label: "I miss the version of me who had more capacity/joy." },
+        ],
+        microPlan: "Write a 3-sentence reframe + choose one “I’m still me” activity this week."
+      },
+    ];
+
+    const loaders = [
+      "sleep deprivation", "mental load", "work stress", "conflict at home",
+      "child behavior challenges", "loneliness", "financial pressure", "health issues",
+      "lack of childcare", "perfectionism"
+    ];
+
+    const resources = [
+      "uninterrupted rest", "practical help", "emotional support", "time alone",
+      "couple support", "predictable routine", "community", "exercise", "spiritual practices"
+    ];
+
+    // --- Helpers ---
+    const $ = (id) => document.getElementById(id);
+
+    function reverseScore(v) { return (v === null || v === undefined) ? null : (4 - v); }
+
+    function zoneFromTotal(total) {
+      if (total <= 15) return { label: "Stable zone", desc: "Keep habits, prevent drift", cls: "bg-emerald-100 text-emerald-900 border-emerald-200" };
+      if (total <= 31) return { label: "Strained zone", desc: "Add supports; reduce load where possible", cls: "bg-amber-100 text-amber-900 border-amber-200" };
+      if (total <= 47) return { label: "High-risk zone", desc: "Prioritize recovery + boundaries + help", cls: "bg-orange-100 text-orange-900 border-orange-200" };
+      return { label: "Acute zone", desc: "Support immediately; consider professional care if distress is high", cls: "bg-rose-100 text-rose-900 border-rose-200" };
+    }
+
+    function renderLikertRadios(questionId, onChange) {
+      const group = document.createElement("div");
+      group.className = "flex flex-wrap gap-2 sm:gap-3";
+
+      scale.forEach(opt => {
+        const label = document.createElement("label");
+        label.className =
+          "inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm " +
+          "hover:bg-slate-50 cursor-pointer";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = questionId;
+        radio.value = String(opt.v);
+        radio.className = "h-4 w-4";
+        if (onChange) radio.addEventListener("change", onChange);
+
+        const text = document.createElement("span");
+        text.className = "font-semibold";
+        text.textContent = opt.label;
+
+        const hint = document.createElement("span");
+        hint.className = "text-slate-500 hidden sm:inline";
+        hint.textContent = opt.full;
+
+        label.appendChild(radio);
+        label.appendChild(text);
+        label.appendChild(hint);
+        group.appendChild(label);
+      });
+
+      return group;
+    }
+
+    function getLikertValueByName(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) return null;
+      return Number(checked.value);
+    }
+
+    function clampMaxChecked(containerId, max) {
+      const container = $(containerId);
+      container.addEventListener("change", (e) => {
+        if (e.target && e.target.type === "checkbox") {
+          const checked = [...container.querySelectorAll("input[type='checkbox']:checked")];
+          if (checked.length > max) e.target.checked = false;
+
+          const countEl = containerId === "loaders" ? $("loadersCount") : $("resourcesCount");
+          countEl.textContent = [...container.querySelectorAll("input[type='checkbox']:checked")].length.toString();
+        }
+      });
+    }
+
+    function setMicroPlanActions(selectedKey) {
+      const wrapper = $("microPlanActions");
+      wrapper.innerHTML = "";
+
+      const actions = {
+        "Depletion": "I will protect a daily 20–30 min recovery block (phone-free).",
+        "Distancing": "I will do one 10-min connection ritual (walk, game, bedtime chat).",
+        "Saturation": "I will remove/automate one repeating task and lower one expectation.",
+        "Self-gap": "I will write a 3-sentence reframe + choose one ‘I’m still me’ activity."
+      };
+
+      Object.entries(actions).forEach(([key, text]) => {
+        const label = document.createElement("label");
+        label.className = "flex gap-3 rounded-lg border border-slate-200 bg-white p-3 hover:bg-slate-50 cursor-pointer";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "microPlanAction";
+        radio.value = key;
+        radio.className = "mt-1";
+        if (selectedKey && key === selectedKey) radio.checked = true;
+
+        const div = document.createElement("div");
+        div.innerHTML = `<div class="text-sm font-semibold">${key}</div><div class="text-sm text-slate-700">${text}</div>`;
+
+        label.appendChild(radio);
+        label.appendChild(div);
+        wrapper.appendChild(label);
+      });
+    }
+
+    function updateCompletedCount() {
+      const names = [];
+      partBGroups.forEach(g => g.items.forEach(i => names.push(i.id)));
+      const completed = names.filter(n => getLikertValueByName(n) !== null).length;
+      $("bCompleted").textContent = completed.toString();
+    }
+
+    // --- Render UI ---
+    function render() {
+      // Part A (now aligned like Part B)
+      const partA = $("partA");
+      partA.innerHTML = "";
+      partAItems.forEach((item, idx) => {
+        const row = document.createElement("div");
+        row.className = "rounded-lg border border-slate-200 bg-white p-3";
+
+        const wrap = document.createElement("div");
+        wrap.className = "flex flex-col gap-2";
+
+        const label = document.createElement("div");
+        label.className = "text-sm font-semibold";
+        label.innerHTML = `<span class="text-slate-500 mr-2">${idx + 1}.</span>${item.label}`;
+
+        const radios = renderLikertRadios(item.id);
+
+        wrap.appendChild(label);
+        wrap.appendChild(radios);
+
+        if (item.reverseHint) {
+          const hint = document.createElement("div");
+          hint.className = "text-xs text-slate-500";
+          hint.textContent = "Reverse-score for tracking (optional).";
+          wrap.appendChild(hint);
+        }
+
+        row.appendChild(wrap);
+        partA.appendChild(row);
+      });
+
+      // Part B
+      const partB = $("partB");
+      partB.innerHTML = "";
+      partBGroups.forEach((group) => {
+        const card = document.createElement("div");
+        card.className = "rounded-xl border border-slate-200 p-4";
+
+        const header = document.createElement("div");
+        header.className = "flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between";
+        header.innerHTML = `
+          <div>
+            <div class="text-sm font-bold">${group.key} <span class="text-slate-500 font-medium">— ${group.subtitle}</span></div>
+            <div class="text-xs text-slate-500">${group.hint}</div>
+          </div>
+        `;
+        card.appendChild(header);
+
+        const list = document.createElement("div");
+        list.className = "mt-4 space-y-3";
+
+        group.items.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "rounded-lg border border-slate-200 bg-white p-3";
+
+          const wrap = document.createElement("div");
+          wrap.className = "flex flex-col gap-2";
+
+          const label = document.createElement("div");
+          label.className = "text-sm font-semibold";
+          label.textContent = item.label;
+
+          const radios = renderLikertRadios(item.id, updateCompletedCount);
+
+          wrap.appendChild(label);
+          wrap.appendChild(radios);
+          row.appendChild(wrap);
+          list.appendChild(row);
+        });
+
+        card.appendChild(list);
+        partB.appendChild(card);
+      });
+
+      // Part C
+      const loadersWrap = $("loaders");
+      loadersWrap.innerHTML = "";
+      loaders.forEach((t) => {
+        const label = document.createElement("label");
+        label.className = "flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-50 cursor-pointer";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.name = "loaders";
+        cb.value = t;
+        const span = document.createElement("span");
+        span.className = "text-sm";
+        span.textContent = t;
+        label.appendChild(cb);
+        label.appendChild(span);
+        loadersWrap.appendChild(label);
+      });
+
+      const resourcesWrap = $("resources");
+      resourcesWrap.innerHTML = "";
+      resources.forEach((t) => {
+        const label = document.createElement("label");
+        label.className = "flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-50 cursor-pointer";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.name = "resources";
+        cb.value = t;
+        const span = document.createElement("span");
+        span.className = "text-sm";
+        span.textContent = t;
+        label.appendChild(cb);
+        label.appendChild(span);
+        resourcesWrap.appendChild(label);
+      });
+
+      clampMaxChecked("loaders", 3);
+      clampMaxChecked("resources", 3);
+
+      setMicroPlanActions("");
+      updateCompletedCount();
+    }
+
+    // --- Validation + Scoring ---
+    function validateRequired() {
+      let ok = true;
+
+      partBGroups.forEach((g) => {
+        g.items.forEach((item) => {
+          const v = getLikertValueByName(item.id);
+          const container = document.querySelector(`input[name="${item.id}"]`)?.closest(".rounded-lg");
+          if (v === null) {
+            ok = false;
+            if (container) container.classList.add("border-rose-300", "bg-rose-50");
+          } else {
+            if (container) container.classList.remove("border-rose-300", "bg-rose-50");
+          }
+        });
+      });
+
+      if (!ok) alert("Please answer all 16 items in Part B to calculate results.");
+      return ok;
+    }
+
+    function calc() {
+      const scores = {};
+      let total = 0;
+
+      partBGroups.forEach((g) => {
+        let sum = 0;
+        g.items.forEach((item) => {
+          const v = getLikertValueByName(item.id);
+          sum += v;
+          total += v;
+        });
+        scores[g.key] = sum;
+      });
+
+      const max = Math.max(...Object.values(scores));
+      const highest = Object.entries(scores).filter(([k, v]) => v === max).map(([k]) => k);
+      const zone = zoneFromTotal(total);
+
+      return { total, scores, highest, zone };
+    }
+
+    function showResults({ total, scores, highest, zone }) {
+      $("resultsSection").classList.remove("hidden");
+
+      $("totalScore").textContent = String(total);
+
+      const badge = $("zoneBadge");
+      badge.textContent = `${zone.label} — ${zone.desc}`;
+      badge.className = `mt-2 inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${zone.cls}`;
+
+      $("scoreDepletion").textContent  = String(scores["Depletion"]);
+      $("scoreDistancing").textContent = String(scores["Distancing"]);
+      $("scoreSaturation").textContent = String(scores["Saturation"]);
+      $("scoreSelfgap").textContent    = String(scores["Self-gap"]);
+
+      const highestText = highest.length > 1 ? highest.join(" (tie), ") : highest[0];
+      $("highestSignal").textContent = highestText;
+
+      const primary = highest[0];
+      const group = partBGroups.find(g => g.key === primary);
+
+      $("highestSignalHint").textContent = group ? group.hint : "—";
+      $("nextStepText").textContent = group ? group.microPlan : "—";
+
+      const a2 = getLikertValueByName("a2");
+      const a4 = getLikertValueByName("a4");
+      $("a2Raw").textContent = a2 === null ? "—" : String(a2);
+      $("a4Raw").textContent = a4 === null ? "—" : String(a4);
+      $("a2Rev").textContent = a2 === null ? "—" : String(reverseScore(a2));
+      $("a4Rev").textContent = a4 === null ? "—" : String(reverseScore(a4));
+
+      $("highestSignalSelect").value = primary;
+      setMicroPlanActions(primary);
+
+      $("resultsSection").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function collectChecked(name) {
+      return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x => x.value);
+    }
+
+    function buildCopySummary() {
+      const total = $("totalScore").textContent;
+      const zone = $("zoneBadge").textContent;
+      const highest = $("highestSignal").textContent;
+
+      const loadersPicked = collectChecked("loaders");
+      const resourcesPicked = collectChecked("resources");
+      const loaderOther = $("loaderOther").value.trim();
+      const resourceOther = $("resourceOther").value.trim();
+
+      const lines = [];
+      lines.push("PBRC Results (reflection tool)");
+      lines.push(`Part B total: ${total}/64`);
+      lines.push(`Zone: ${zone}`);
+      lines.push(`Highest signal: ${highest}`);
+
+      if (loadersPicked.length || loaderOther) {
+        lines.push(`Top loaders: ${[...loadersPicked, loaderOther].filter(Boolean).join(", ")}`);
+      }
+      if (resourcesPicked.length || resourceOther) {
+        lines.push(`Missing resources: ${[...resourcesPicked, resourceOther].filter(Boolean).join(", ")}`);
+      }
+
+      const selectedPlan = document.querySelector('input[name="microPlanAction"]:checked')?.value || "";
+      if (selectedPlan) lines.push(`Micro-plan focus: ${selectedPlan}`);
+
+      const blockers = $("blockers").value.trim();
+      const workaround = $("workaround").value.trim();
+      const support = $("supportPerson").value.trim();
+      if (blockers) lines.push(`Blockers: ${blockers}`);
+      if (workaround) lines.push(`Workaround: ${workaround}`);
+      if (support) lines.push(`Support: ${support}`);
+
+      return lines.join("\n");
+    }
+
+    // --- Share Link (autofill) ---
+    function encodeLikertString(ids) {
+      return ids.map(id => {
+        const v = getLikertValueByName(id);
+        return (v === null || Number.isNaN(v)) ? "-" : String(v);
+      }).join("");
+    }
+
+    function decodeLikertString(ids, str) {
+      if (!str) return;
+      ids.forEach((id, i) => {
+        const ch = str[i];
+        if (!ch || ch === "-") return;
+        const el = document.querySelector(`input[name="${id}"][value="${ch}"]`);
+        if (el) el.checked = true;
+      });
+    }
+
+    function setCheckedByValue(name, values) {
+      const set = new Set(values);
+      document.querySelectorAll(`input[name="${name}"]`).forEach(cb => cb.checked = set.has(cb.value));
+    }
+
+    function buildShareURL() {
+      const aIds = partAItems.map(x => x.id);
+      const bIds = [];
+      partBGroups.forEach(g => g.items.forEach(i => bIds.push(i.id)));
+
+      const params = new URLSearchParams();
+      params.set("a", encodeLikertString(aIds));
+      params.set("b", encodeLikertString(bIds));
+
+      const lo = collectChecked("loaders");
+      const re = collectChecked("resources");
+      const loIdx = lo.map(v => loaders.indexOf(v)).filter(i => i >= 0);
+      const reIdx = re.map(v => resources.indexOf(v)).filter(i => i >= 0);
+      if (loIdx.length) params.set("lo", loIdx.join(","));
+      if (reIdx.length) params.set("re", reIdx.join(","));
+
+      const base = `${location.origin}${location.pathname}`;
+      return `${base}?${params.toString()}`;
+    }
+
+    function applyFromURL() {
+      const qs = new URLSearchParams(location.search);
+      if (![...qs.keys()].length) return;
+
+      const aIds = partAItems.map(x => x.id);
+      const bIds = [];
+      partBGroups.forEach(g => g.items.forEach(i => bIds.push(i.id)));
+
+      decodeLikertString(aIds, qs.get("a"));
+      decodeLikertString(bIds, qs.get("b"));
+
+      const lo = (qs.get("lo") || "").split(",").filter(Boolean).map(Number).filter(n => Number.isInteger(n) && n >= 0 && n < loaders.length);
+      const re = (qs.get("re") || "").split(",").filter(Boolean).map(Number).filter(n => Number.isInteger(n) && n >= 0 && n < resources.length);
+
+      setCheckedByValue("loaders", lo.map(i => loaders[i]));
+      setCheckedByValue("resources", re.map(i => resources[i]));
+      $("loadersCount").textContent = String(lo.length);
+      $("resourcesCount").textContent = String(re.length);
+
+      updateCompletedCount();
+    }
+
+    // --- Option 2: send email via Apps Script ---
+    function looksLikeEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function sendResultsEmail() {
+      const status = $("emailStatus");
+      status.textContent = "";
+
+      // simple bot trap
+      if (($("hpField")?.value || "").trim() !== "") return;
+
+      const email = ($("emailCapture").value || "").trim();
+      if (!looksLikeEmail(email)) {
+        status.textContent = "Please enter a valid email address.";
+        status.className = "mt-3 text-sm text-rose-700";
+        return;
+      }
+
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_YOUR")) {
+        status.textContent = "Setup needed: paste your Google Apps Script Web App URL into APPS_SCRIPT_URL in the code.";
+        status.className = "mt-3 text-sm text-amber-800";
+        return;
+      }
+
+      const summary = buildCopySummary();
+      const payload = {
+        email,
+        summary,
+        page: location.href,
+        sentAt: new Date().toISOString()
+      };
+
+      // Because Apps Script often lacks CORS headers, use no-cors.
+      // We cannot read a success response, but the request will be sent.
+      status.textContent = "Sending…";
+      status.className = "mt-3 text-sm text-slate-700";
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        status.textContent = "Sent! Check your inbox (and spam/junk).";
+        status.className = "mt-3 text-sm text-emerald-700";
+      } catch (err) {
+        status.textContent = "Hmm — failed to send. Check your Apps Script URL and deployment settings.";
+        status.className = "mt-3 text-sm text-rose-700";
+      }
+    }
+
+    // --- Events ---
+    document.addEventListener("DOMContentLoaded", () => {
+      render();
+      applyFromURL();
+
+      $("highestSignalSelect").addEventListener("change", (e) => setMicroPlanActions(e.target.value));
+
+      $("resetBtn").addEventListener("click", () => {
+        document.getElementById("pbrcForm").reset();
+        $("resultsSection").classList.add("hidden");
+        $("loadersCount").textContent = "0";
+        $("resourcesCount").textContent = "0";
+        $("shareUrl").value = "";
+        $("emailCapture").value = "";
+        $("emailStatus").textContent = "";
+        setMicroPlanActions("");
+        updateCompletedCount();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        history.replaceState({}, document.title, location.pathname);
+      });
+
+      $("pbrcForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!validateRequired()) return;
+        showResults(calc());
+      });
+
+      $("copyBtn").addEventListener("click", async () => {
+        try {
+          const text = buildCopySummary();
+          await navigator.clipboard.writeText(text);
+          $("copyBtn").textContent = "Copied ✓";
+          setTimeout(() => $("copyBtn").textContent = "Copy summary", 1200);
+        } catch {
+          alert("Copy failed. Your browser may block clipboard access.");
+        }
+      });
+
+      $("shareBtn").addEventListener("click", () => {
+        const url = buildShareURL();
+        $("shareUrl").value = url;
+        history.replaceState({}, document.title, url);
+      });
+
+      $("copyShareBtn").addEventListener("click", async () => {
+        try {
+          const url = $("shareUrl").value || buildShareURL();
+          $("shareUrl").value = url;
+          await navigator.clipboard.writeText(url);
+          $("copyShareBtn").textContent = "Copied ✓";
+          setTimeout(() => $("copyShareBtn").textContent = "Copy link", 1200);
+        } catch {
+          alert("Copy failed. Your browser may block clipboard access.");
+        }
+      });
+
+      $("sendEmailBtn").addEventListener("click", sendResultsEmail);
+    });
+  </script>
+</body>
+</html>
